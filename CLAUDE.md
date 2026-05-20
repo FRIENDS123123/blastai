@@ -70,13 +70,14 @@ blastai/
 - **Business (₹3,499/mo):** unlimited emails (fair use 100K), AI personalization ON, multi-user
 
 ## Status
+## Status
 
-**Current:** Week 1, Day 1 — foundation setup in progress.
+**Current:** Week 1, Day 2 — Supabase Auth implementation.
 
-**Completed:** (update this section after every day)
+**Completed:**
+- Day 1: Foundation deployed. Next.js 14 + Tailwind + Supabase clients + landing page (multi-channel pitch with WhatsApp/SMS waitlist) + placeholder routes + pricing table. Live at https://blastai-six.vercel.app. Repo: github.com/FRIENDS123123/blastai. Metadata fixed for production.
 
-**Next:** Day 2 — Supabase Auth (signup, login, reset password, protected dashboard route).
-
+**Next:** Day 2 — Supabase Auth (signup, login, password reset, /dashboard protected route).
 ## How to work with me (the founder)
 
 - Give numbered step-by-step instructions for anything requiring manual action outside the terminal.
