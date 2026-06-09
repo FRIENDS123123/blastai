@@ -1,6 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
+import { Mail, MessageCircle, Smartphone } from 'lucide-react'
+import WaitlistModal from '@/components/marketing/WaitlistModal'
 
 const tiers = [
   {
@@ -46,6 +49,11 @@ const tiers = [
 ]
 
 export default function Home() {
+  const [waitlistModal, setWaitlistModal] = useState<{
+    open: boolean
+    channel: 'whatsapp' | 'sms' | null
+  }>({ open: false, channel: null })
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Nav */}
@@ -69,8 +77,14 @@ export default function Home() {
 
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-6 pt-20 pb-16 text-center">
+        <div className="inline-flex items-center gap-1.5 bg-orange-50 text-orange-600 text-xs font-medium px-3 py-1 rounded-full mb-6 border border-orange-100">
+          <span>🇮🇳</span>
+          <span>Made in India</span>
+        </div>
         <h1 className="text-4xl sm:text-5xl font-bold leading-tight tracking-tight mb-6">
-          Multi-channel marketing<br className="hidden sm:block" /> for Indian businesses
+          Multi-channel marketing{' '}
+          <br className="hidden sm:block" />
+          for Indian businesses
         </h1>
         <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-10">
           AI-personalized email today. WhatsApp and SMS coming soon. One tool. Built for India. Priced in INR.
@@ -94,8 +108,11 @@ export default function Home() {
       {/* Channels row */}
       <section className="max-w-5xl mx-auto px-6 pb-20">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {/* Email — live */}
           <div className="border border-gray-200 rounded-2xl p-6 flex flex-col gap-3">
-            <div className="text-3xl">📧</div>
+            <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center">
+              <Mail size={20} className="text-indigo-600" />
+            </div>
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-semibold">Email</h3>
               <span className="text-xs font-medium bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
@@ -108,8 +125,11 @@ export default function Home() {
             </Link>
           </div>
 
+          {/* WhatsApp — waitlist */}
           <div className="border border-gray-200 rounded-2xl p-6 flex flex-col gap-3 opacity-75">
-            <div className="text-3xl">💬</div>
+            <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
+              <MessageCircle size={20} className="text-green-600" />
+            </div>
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-semibold">WhatsApp</h3>
               <span className="text-xs font-medium bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">
@@ -118,15 +138,18 @@ export default function Home() {
             </div>
             <p className="text-sm text-gray-500">Bulk WhatsApp messaging with template support and delivery tracking.</p>
             <button
-              onClick={() => alert('Waitlist coming soon')}
-              className="mt-auto text-sm font-medium text-gray-500 hover:text-gray-700 text-left"
+              onClick={() => setWaitlistModal({ open: true, channel: 'whatsapp' })}
+              className="mt-auto self-start bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-full transition-colors"
             >
-              Join waitlist →
+              Join waitlist
             </button>
           </div>
 
+          {/* SMS — waitlist */}
           <div className="border border-gray-200 rounded-2xl p-6 flex flex-col gap-3 opacity-75">
-            <div className="text-3xl">📱</div>
+            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+              <Smartphone size={20} className="text-blue-600" />
+            </div>
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-semibold">SMS</h3>
               <span className="text-xs font-medium bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">
@@ -135,10 +158,10 @@ export default function Home() {
             </div>
             <p className="text-sm text-gray-500">Transactional and promotional SMS with DLT compliance built in.</p>
             <button
-              onClick={() => alert('Waitlist coming soon')}
-              className="mt-auto text-sm font-medium text-gray-500 hover:text-gray-700 text-left"
+              onClick={() => setWaitlistModal({ open: true, channel: 'sms' })}
+              className="mt-auto self-start bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-full transition-colors"
             >
-              Join waitlist →
+              Join waitlist
             </button>
           </div>
         </div>
@@ -230,6 +253,15 @@ export default function Home() {
           hello@blastai.in
         </a>
       </footer>
+
+      {/* Waitlist Modal */}
+      {waitlistModal.channel && (
+        <WaitlistModal
+          isOpen={waitlistModal.open}
+          onClose={() => setWaitlistModal({ open: false, channel: null })}
+          channel={waitlistModal.channel}
+        />
+      )}
     </div>
   )
 }
