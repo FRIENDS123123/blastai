@@ -5,9 +5,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
-export default function LoginPage() {
-  const [email, setEmail] = useState('')
+export default function NewPasswordPage() {
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -16,21 +16,22 @@ export default function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
-    setLoading(true)
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
-    setLoading(false)
-
-    if (signInError) {
-      if (signInError.message.toLowerCase().includes('email not confirmed')) {
-        setError('Please check your email to confirm your account before signing in.')
-      } else {
-        setError(signInError.message)
-      }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.')
       return
     }
 
-    router.push('/dashboard')
+    setLoading(true)
+    const { error: updateError } = await supabase.auth.updateUser({ password })
+    setLoading(false)
+
+    if (updateError) {
+      setError(updateError.message)
+      return
+    }
+
+    router.push('/login?message=password_updated')
     router.refresh()
   }
 
@@ -43,38 +44,43 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-900 text-center mb-8">
-          Sign in to BlastAI
+        <h1 className="text-2xl font-bold text-gray-900 text-center mb-1">
+          Set a new password
         </h1>
+        <p className="text-gray-500 text-sm text-center mb-8">
+          Choose a new password for your account
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Password
+              New Password
             </label>
             <input
               id="password"
               type="password"
               required
+              minLength={6}
               value={password}
               onChange={e => setPassword(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="Your password"
+              placeholder="Min. 6 characters"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              Confirm New Password
+            </label>
+            <input
+              id="confirmPassword"
+              type="password"
+              required
+              minLength={6}
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              placeholder="Repeat new password"
             />
           </div>
 
@@ -87,18 +93,9 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-medium py-2.5 rounded-lg text-sm transition-colors"
           >
-            {loading ? 'Signing in…' : 'Sign in'}
+            {loading ? 'Updating…' : 'Update password'}
           </button>
         </form>
-
-        <div className="flex justify-between text-sm mt-6">
-          <Link href="/reset-password" className="text-indigo-600 hover:underline">
-            Forgot password?
-          </Link>
-          <Link href="/signup" className="text-indigo-600 hover:underline font-medium">
-            Create an account
-          </Link>
-        </div>
       </div>
     </div>
   )

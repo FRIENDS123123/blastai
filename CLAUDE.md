@@ -70,7 +70,6 @@ blastai/
 - **Business (₹3,499/mo):** unlimited emails (fair use 100K), AI personalization ON, multi-user
 
 ## Status
-## Status
 
 **Current:** Week 1, Day 2 — Supabase Auth implementation.
 
