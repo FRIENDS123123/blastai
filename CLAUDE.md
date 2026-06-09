@@ -71,12 +71,14 @@ blastai/
 
 ## Status
 
-**Current:** Week 1, Day 2 — Supabase Auth implementation.
+**Current:** Week 1, Day 3 — Waitlist modal frontend bug fix pending (KNOWN ISSUE).
 
 **Completed:**
-- Day 1: Foundation deployed. Next.js 14 + Tailwind + Supabase clients + landing page (multi-channel pitch with WhatsApp/SMS waitlist) + placeholder routes + pricing table. Live at https://blastai-six.vercel.app. Repo: github.com/FRIENDS123123/blastai. Metadata fixed for production.
+- Day 1: Foundation deployed.
+- Day 2: Supabase Auth complete.
+- Day 3 (partial): Supabase waitlist table with RLS, API route (rate-limited, dedup), founder admin view at /admin/waitlist, modal-based signup flow on landing page, lucide icons replacing emojis, fixed Join waitlist button styling, fixed email validation UX. Production tested — backend confirmed working (5 rows captured in Supabase from test signups across local + production). KNOWN BUG: frontend modal shows error message on successful API response.
 
-**Next:** Day 2 — Supabase Auth (signup, login, password reset, /dashboard protected route).
+**Next:** Day 3 closeout — fix WaitlistModal.tsx response handling so it correctly displays "You're on the list!" for status:"subscribed" and "Already on waitlist" for status:"already_subscribed" instead of showing generic error. Then re-test on production with fresh emails and update status to mark Day 3 fully shipped.
 ## How to work with me (the founder)
 
 - Give numbered step-by-step instructions for anything requiring manual action outside the terminal.
